@@ -15,10 +15,10 @@ def test_idealgas():
         'specific-heat-ratio': 1.4
     }
     parameters = [
-        (td.Vmol_PT, 0.0249434),
-        (td.Umol_PT, 6236),
-        (td.Hmol_PT, 8730),
-        (td.Smol_PT, -149.2)
+        (td.Vmol_PT, 0.0249434 * u.m3_mol),
+        (td.Umol_PT, 6236 * u.J_mol),
+        (td.Hmol_PT, 8730 * u.J_mol),
+        (td.Smol_PT, -149.2 * u.J_molK)
     ]
     
     for function, value in parameters:

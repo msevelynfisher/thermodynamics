@@ -12,14 +12,13 @@ GPa = 1e9
 
 # Temperature
 
+K = 1
 class __C:
     def __rmul__(self, other):
-        return other + 273.15
+        return other + 273.15 * K
     def __rtruediv__(self, other):
-        return other - 273.15
-
+        return other - 273.15 * K
 C = __C()
-K = 1
 
 # Energy
 
@@ -40,3 +39,29 @@ GW = 1e9
 s = 1
 mn = 60
 hr = 60 * mn
+
+# Moles
+
+mol = 1
+particles = 1.0 / 6.0221409e+23
+
+# Volume
+
+m3 = 1
+
+# Molar properties
+
+m3_mol = m3 / mol
+J_mol = J / mol
+J_molK = J / (mol * K)
+
+# Mass
+
+kg = 1
+g = 1e-3
+
+# Specific properties
+
+m3_kg = m3 / kg
+J_kg = J / kg
+J_kgK = J / (kg * K)
