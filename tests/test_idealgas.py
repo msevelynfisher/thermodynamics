@@ -14,19 +14,33 @@ def test_idealgas():
     substance = {
         'specific-heat-ratio': 1.4
     }
+    parameters = [
+        (td.Vmol_PT, 0.0249434),
+        (td.Umol_PT, 6236),
+        (td.Hmol_PT, 8730),
+        (td.Smol_PT, -149.2)
+    ]
     
-    Vmol_predicted = td.Vmol_PT(P, T, substance, td.eos.IDEAL_GAS)
-    Vmol_true = 0.0249434
-    assert relative_error(Vmol_predicted, Vmol_true) < 1e-5
-    
-    Umol_predicted = td.Umol_PT(P, T, substance, td.eos.IDEAL_GAS)
-    Umol_true = 6236
-    assert relative_error(Umol_predicted, Umol_true) < 1e-3
-    
-    Hmol_predicted = td.Hmol_PT(P, T, substance, td.eos.IDEAL_GAS)
-    Hmol_true = 8730
-    assert relative_error(Hmol_predicted, Hmol_true) < 1e-3
-    
-    Smol_predicted = td.Smol_PT(P, T, substance, td.eos.IDEAL_GAS)
-    Smol_true = -149.2
-    assert relative_error(Smol_predicted, Smol_true) < 1e-3
+    for function, value in parameters:
+        
+        # Forward
+        value_predicted = function(P, T, substance, td.eos.IDEAL_GAS)
+        assert relative_error(value_predicted, value) < 1e-3
+        
+        # Backward, Pressure
+        try:
+            P_predicted = td.seek(
+                value_predicted, function, None, T, substance, td.eos.IDEAL_GAS
+            )
+            assert relative_error(P_predicted, P) < 1e-3
+        except td.FunctionalIndependenceError:
+            pass
+        
+        # Backward, Temperature
+        try:
+            T_predicted = td.seek(
+                value_predicted, function, P, None, substance, td.eos.IDEAL_GAS
+            )
+            assert relative_error(T_predicted, T) < 1e-3
+        except FunctionalIndependenceError:
+            pass
